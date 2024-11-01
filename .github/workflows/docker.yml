@@ -48,13 +48,12 @@ jobs:
       with:
         playbook: ./ansible/docker-playbook.yml
         directory: ./
-        key: ${{secrets.SSH_PRIVATE_KEY}}
-        env:
-        # # Optional, literal inventory file contents
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         inventory: |
           [todo_app]
-          ${{secrets.SSH_HOST}} ansible_user=ubuntu 
+          ${{ secrets.SSH_HOST }} ansible_user=ubuntu 
         options: |
           --verbose
-          --extra-vars IMAGE_NAME=${{ secrets.USERNAME_DOCKER_HUB }}/nodejs-app:latest
+          --extra-vars "IMAGE_NAME=${{ secrets.USERNAME_DOCKER_HUB }}/nodejs-app:latest"
+
 
