@@ -40,7 +40,8 @@
         enabled: true
 
     - name: Atualizar imagem Docker
-      shell: docker pull "{{ image_name }}"
+      shell: docker pull "{{ IMAGE_NAME }}"
+
 
     - name: Parar qualquer container existente com o mesmo nome
       shell: |
