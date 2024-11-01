@@ -9,6 +9,13 @@ resource "mgc_virtual_machine_instances" "todo_app_instance" {
   network = {
     associate_public_ip = true
     delete_public_ip    = false
+
+    interface = {
+      security_groups = [ {
+        id = "4aa1a237-2d57-439b-bf6a-177ddbace4cb"
+      } ]
+    }
+
   }
 
   ssh_key_name = "chave_do_spinelli"
