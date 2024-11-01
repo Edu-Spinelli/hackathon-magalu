@@ -53,4 +53,4 @@
 
     - name: Iniciar o container com a nova imagem na porta 8080
       shell: |
-        docker run -d --name todo-app -p 8080:8080 {{ IMAGE_NAME }}
+        docker run -d --name todo-app -p 8080:3000 {{ IMAGE_NAME }}
