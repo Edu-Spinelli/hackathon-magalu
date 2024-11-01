@@ -46,7 +46,7 @@ jobs:
     - name: Run playbook
       uses: dawidd6/action-ansible-playbook@v2
       with:
-        playbook: ./ansible/continuous-playbook.yml
+        playbook: ./ansible/docker-playbook.yml
         directory: ./
         key: ${{secrets.SSH_PRIVATE_KEY}}
         env:
