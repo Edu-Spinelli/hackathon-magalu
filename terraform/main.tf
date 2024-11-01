@@ -1,5 +1,3 @@
-
-
 resource "mgc_virtual_machine_instances" "todo_app_instance" {
   name          = "todo_app_instance"
   machine_type  = {
