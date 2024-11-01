@@ -1,0 +1,7 @@
+- hosts: todo_app
+  tasks:
+    - name: Update docker image
+      become: true
+      shell: docker pull IMAGE_NAME
+      environment:
+        IMAGE_NAME: "{{ lookup('env', 'IMAGE_NAME') }}"

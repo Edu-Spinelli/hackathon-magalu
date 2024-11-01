@@ -3,7 +3,7 @@ name: Continuous Delivery (Docker)
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   docker:
