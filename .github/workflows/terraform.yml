@@ -26,7 +26,7 @@ jobs:
         run: cd terraform && terraform validate -no-color
 
       - name: Terraform Apply
-        run: cd terraform &&terraform apply -auto-approve
+        run: cd terraform && terraform apply -auto-approve
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
