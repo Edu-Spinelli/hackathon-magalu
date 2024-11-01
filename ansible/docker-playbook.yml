@@ -38,9 +38,8 @@
         enabled: true
 
     - name: Atualizar imagem Docker
-      shell: docker pull $IMAGE_NAME
-      environment:
-        IMAGE_NAME: "{{ lookup('env', 'IMAGE_NAME') }}"
+      shell: docker pull "{{ lookup('env', 'IMAGE_NAME') }}"
+
 
     - name: Parar qualquer container existente com o mesmo nome
       shell: |
