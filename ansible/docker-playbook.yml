@@ -45,9 +45,9 @@
 
     - name: Parar qualquer container existente com o mesmo nome
       shell: |
-        if [ $(docker ps -q --filter "name=todo-app") ]; then
+        if [ $(docker ps -aq --filter "name=todo-app") ]; then
           docker stop todo-app
-          docker rm todo-app
+          docker rm -f todo-app
         fi
       ignore_errors: yes
 
