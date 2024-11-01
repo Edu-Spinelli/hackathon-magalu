@@ -1,7 +1,57 @@
 - hosts: todo_app
+  become: true
   tasks:
-    - name: Update docker image
-      become: true
-      shell: docker pull IMAGE_NAME
+    - name: Atualizar cache de pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalar dependências para Docker
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+
+    - name: Adicionar chave GPG do Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adicionar repositório Docker
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Instalar Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Certificar que o serviço Docker está rodando
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Atualizar imagem Docker
+      shell: docker pull {{ lookup('env', 'IMAGE_NAME') }}
+      environment:
+        IMAGE_NAME: "{{ lookup('env', 'IMAGE_NAME') }}"
+
+    - name: Parar qualquer container existente com o mesmo nome
+      shell: |
+        if [ $(docker ps -q --filter "name=todo-app") ]; then
+          docker stop todo-app
+          docker rm todo-app
+        fi
+      ignore_errors: yes
+
+    - name: Iniciar o container com a nova imagem na porta 8080
+      shell: |
+        docker run -d --name todo-app -p 8080:8080 {{ lookup('env', 'IMAGE_NAME') }}
       environment:
         IMAGE_NAME: "{{ lookup('env', 'IMAGE_NAME') }}"
