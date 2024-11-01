@@ -1,0 +1,61 @@
+name: Continuous Delivery (Docker)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docker:
+    needs: formatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup Docker Build
+        uses: docker/setup-buildx-action@v2.0.0
+
+      - name: Docker Login
+        uses: docker/login-action@v2.0.0
+        with:
+          username: ${{ secrets.USERNAME_DOCKER_HUB }}
+          password: ${{ secrets.PASSWORD_DOCKER_HUB }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.USERNAME_DOCKER_HUB }}/nodejs-app:latest
+  ansible:
+    needs: formatter
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v3
+
+    # - name: Sleeping waiting instance is completed deployed
+    #   run: sleep 180
+
+    - name: Setting ssh key
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} 
+
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: ./ansible/continuous-playbook.yml
+        directory: ./
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        env
+        # # Optional, literal inventory file contents
+        inventory: |
+          [netflix_backend]
+          ${{secrets.SSH_HOST}} ansible_user=ubuntu 
+        options: |
+          --verbose
+          --extra-vars IMAGE_NAME=${{ secrets.USERNAME_DOCKER_HUB }}/nodejs-app:latest
+

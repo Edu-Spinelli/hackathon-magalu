@@ -1,0 +1,33 @@
+name: Continuous Delivery (Terraform)
+
+on:
+  push:
+    paths:
+      - "**/*.tf"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hashicorp/setup-terraform@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
+          TF_VAR_mgc_region: ${{ secrets.MGC_REGION }}
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
+          TF_VAR_mgc_region: ${{ secrets.MGC_REGION }}
