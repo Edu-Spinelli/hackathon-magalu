@@ -50,7 +50,7 @@ jobs:
         playbook: ./ansible/continuous-playbook.yml
         directory: ./
         key: ${{secrets.SSH_PRIVATE_KEY}}
-        env
+        env:
         # # Optional, literal inventory file contents
         inventory: |
           [todo_app]
