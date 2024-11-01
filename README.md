@@ -95,7 +95,7 @@ npm install
 # Start the app in the browser
 npm start
 
-# The server will initialize in the <http://localhost:3000>
+# The server will initialize in the <http://localhost:8080>
 ```
 
 ![start](./readme/start.jpg)
@@ -117,7 +117,7 @@ WORKDIR /app
 COPY package*.json .
 RUN npm install
 COPY . .
-EXPOSE 3000
+EXPOSE 8080
 CMD ["npm", "start"]
 ```
 
