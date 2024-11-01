@@ -1,7 +1,7 @@
 resource "mgc_virtual_machine_instances" "todo_app_instance" {
   name          = "todo_app_instance"
   machine_type  = {
-    name = "cloud-bs1.xsmall"
+    name = "BV8-16-100"
   }
   image = {
     name = "cloud-ubuntu-22.04 LTS"
