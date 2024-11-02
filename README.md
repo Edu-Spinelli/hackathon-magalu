@@ -34,7 +34,7 @@ on:
 
 - Setup Terraform: Configura o ambiente Terraform.
 - Checkout Repo: Clona o repositório para acessar o código.
-- Terraform Init: Inicializa o diretório Terraform.
+- Terraform Init: Inicializa o diretório Terraform..
 - Terraform Validate: Valida a configuração do Terraform.
 - Terraform Apply: Aplica as mudanças no Terraform.
 
